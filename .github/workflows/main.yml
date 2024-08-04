@@ -30,8 +30,7 @@ jobs:
       run: |
         terraform init
         terraform fmt -check
-        terraform plan -input=false -out=tfplan \
-          -var "git_commit_sha=${{github.sha}}"
+        terraform plan -input=false -out=tfplan
       working-directory: ./terraform
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
