@@ -10,11 +10,6 @@ resource "aws_route53_record" "main_lb_dns" {
   }
 }
 
-import {
-  to = aws_route53_record.main_lb_dns
-  id = "Z0424378XVXHOFVZNJ5G_zzzyx.click_A"
-}
-
 data "aws_route53_zone" "domain_zone" {
   name = "zzzyx.click"
 }

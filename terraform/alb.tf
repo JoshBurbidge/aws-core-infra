@@ -10,11 +10,6 @@ resource "aws_lb" "main_lb" {
   }
 }
 
-import {
-  to = aws_lb.main_lb
-  id = "arn:aws:elasticloadbalancing:us-east-1:575737149124:loadbalancer/app/main-lb/d72b31cf256392a1"
-}
-
 resource "aws_lb_listener" "main_lb_https_listener" {
   load_balancer_arn = aws_lb.main_lb.arn
   port              = "443"
@@ -33,9 +28,4 @@ resource "aws_lb_listener" "main_lb_https_listener" {
   tags = {
     app = "forum-client"
   }
-}
-
-import {
-  to = aws_lb_listener.main_lb_https_listener
-  id = "arn:aws:elasticloadbalancing:us-east-1:575737149124:listener/app/main-lb/d72b31cf256392a1/ac0d192325e4ad92"
 }
