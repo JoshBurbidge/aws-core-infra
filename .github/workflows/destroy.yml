@@ -1,0 +1,36 @@
+name: Destroy
+on:
+  workflow_dispatch: 
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    name: Destroy
+    concurrency: core-deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v4
+    - uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::575737149124:role/forum-server-deploy
+        aws-region: us-east-1
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.9.2
+    - name: Terraform
+      run: |
+        terraform init
+        terraform fmt -check
+        terraform plan -input=false -destroy \
+          -var "ecr_repository_name=$REPOSITORY_NAME" \
+          -var "git_commit_sha=${{github.sha}}"
+      working-directory: ./terraform
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -input=false -destroy
+      working-directory: ./terraform
